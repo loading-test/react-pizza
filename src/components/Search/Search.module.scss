@@ -1,0 +1,39 @@
+.rootSearch {
+  position: relative;
+  left: -120px;
+}
+
+.inputSearch {
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 12px 20px;
+  width: 400px;
+  padding-left: 50px;
+  border-radius: 10px;
+
+  &:focus {
+    border: 1px solid rgba(0,0,0,0.4);
+  }
+}
+
+.searchIcon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+  position: absolute;
+  left: 14px;
+  top: 12px;
+}
+
+.closeIcon {
+  width: 22px;
+  height: 22px;
+  opacity: 0.3;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 11px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
