@@ -4,22 +4,22 @@ import PizzaBlock from '../components/PizzaBlock';
 import Sort from '../components/Sort';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryId } from '../components/redux/slices/filter';
 
-const Home = ({ searchValue, setSearchValue }) => {
+const Home = ({ searchValue }) => {
+  const dispatch = useDispatch();
+  const { categoryId, sort } = useSelector((state) => state.filter);
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortType, setSortType] = useState({
-    name: 'популярности',
-    sort: 'rating',
-  });
 
   useEffect(() => {
     setIsLoading(true);
 
-    const order = sortType.sort.includes('-') ? 'asc' : 'desc';
-    const sortBy = sortType.sort.replace('-', '');
+    const sortBy = sort.sortProperty.replace('-', '');
+    const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
@@ -32,16 +32,20 @@ const Home = ({ searchValue, setSearchValue }) => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, searchValue, currentPage]);
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
+  const onChangeFilter = (id) => {
+    dispatch(setCategoryId(id));
+  };
+
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onChangeCategory={(id) => setCategoryId(id)} />
-        <Sort value={sortType} onChangeSort={(i) => setSortType(i)} />
+        <Categories value={categoryId} onChangeCategory={onChangeFilter} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
