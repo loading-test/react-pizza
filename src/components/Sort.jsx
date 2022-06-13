@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSort } from './redux/slices/filter';
+import { setSort } from './redux/slices/filterSlice';
 
 export const sortList = [
   { name: 'популярности (DESC)', sortProperty: 'rating' },
@@ -14,6 +14,7 @@ export const sortList = [
 export const Sort = memo(() => {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
+  const sortRef = useRef();
 
   const [openSort, setOpenSort] = useState(false);
 
@@ -22,8 +23,19 @@ export const Sort = memo(() => {
     setOpenSort(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.path.includes(sortRef.current)) {
+        setOpenSort(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => document.body.removeEventListener('click', handleClickOutside);
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
