@@ -12,7 +12,7 @@ export const CartEmpty = () => {
           <br />
           Для того, чтобы заказать пиццу, перейди на главную страницу.
         </p>
-        <img src={cartEmptyImg} />
+        <img src={cartEmptyImg} alt="phote" />
         <Link to="/" className="button button--black">
           <span>Вернуться назад</span>
         </Link>
