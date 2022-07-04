@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
 import SortPopup, { sortList } from '../components/Sort';
@@ -8,14 +8,11 @@ import { useSelector } from 'react-redux';
 import {
   setCategoryId,
   setCurrentPage,
-  setFilters,
   selectFilter,
 } from '../components/redux/slices/filterSlice';
-import qs from 'qs';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   fetchPizzas,
-  SearchPizzaParams,
   selectPizzaData,
 } from '../components/redux/slices/pizzaSlice';
 import { useAppDispatch } from '../components/redux/store';
@@ -28,6 +25,15 @@ const Home: React.FC = () => {
 
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzaData);
+
+  const onChangeFilter = useCallback((id: number) => {
+    dispatch(setCategoryId(id));
+  }, []);
+
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
+  };
+
 
   const getPizzas = async () => {
     const sortBy = sort.sortProperty.replace('-', '');
@@ -98,26 +104,16 @@ const Home: React.FC = () => {
   // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const pizzas = items.map((obj: any) => (
-    <Link key={obj.id} to={`/pizza/${obj.id}`}>
-      <PizzaBlock {...obj} />
-    </Link>
+      <PizzaBlock key={obj.id} {...obj} />
   ));
 
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
-
-  const onChangeFilter = (id: number) => {
-    dispatch(setCategoryId(id));
-  };
-
-  const onChangePage = (page: number) => {
-    dispatch(setCurrentPage(page));
-  };
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeFilter} />
-        <SortPopup />
+        <SortPopup value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (
