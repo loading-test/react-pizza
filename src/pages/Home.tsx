@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import Categories from '../components/Categories';
-import PizzaBlock from '../components/PizzaBlock';
-import SortPopup from '../components/Sort';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination';
+import {Categories, PizzaBlock, SortPopup, Skeleton, Pagination} from '../components/';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../components/redux/store';
 import { selectFilter } from '../components/redux/filter/selectors';

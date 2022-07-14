@@ -7,7 +7,7 @@ type CartProps = {
   id: string, title: string, type: string, size: number, price: number, imageUrl: string, count: number
 }
 
-const CartItemBlock: React.FC<CartProps> = ({ id, title, type, size, price, imageUrl, count }) => {
+export const CartItemBlock: React.FC<CartProps> = ({ id, title, type, size, price, imageUrl, count }) => {
   const dispatch = useDispatch();
 
   const onClickPlus = () => {
@@ -100,5 +100,3 @@ const CartItemBlock: React.FC<CartProps> = ({ id, title, type, size, price, imag
     </div>
   );
 };
-
-export default CartItemBlock;
